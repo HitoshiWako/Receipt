@@ -1,29 +1,20 @@
+{% extends "receipt/base.html" %}
 {% load django_bootstrap5 %}
-<!doctype html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        <title>{{title}}</title>
-    </head>
-    <body>
-        <div class="container">
-        <h1>{{title}}</h1>
-        <div>
-            {% if id is not None %}
-                <h2>画像が登録されました</h2>
-                <p>画像のIDは {{id}} です</p>
-            {% endif %}
-        </div>
-        <div>
-            <h2>画像を登録する</h2>
-            <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% bootstrap_form upload_form %}
-                {% bootstrap_button type="submit" content="アップロード" %}
-            </form>
-        </div>
-        </div>
-    </body>
-</html>
+{% block content %}
+    <h1>{{title}}</h1>
+    <div>
+        {% if id is not None %}
+            <div class="alert alert-primary" role="alert">
+                画像が登録されました。IDは{{id}}です。
+            </div> 
+        {% endif %}
+    </div>
+    <div>
+        <h2>画像を登録する</h2>
+        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form upload_form show_label=False %}
+            {% bootstrap_button type="submit" content="アップロード" %}
+        </form>
+    </div>
+{% endblock content %}
