@@ -17,4 +17,20 @@
             {% bootstrap_button type="submit" content="アップロード" %}
         </form>
     </div>
+    <div class="row">
+        {% for image in images %}
+            <div class="card m-2" style="width: 18rem;">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img src="{{image.image.url}}" class="img-fluid rounded-start" alt = "no Image">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h5 class="card-title">{{image.id}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}
