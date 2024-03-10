@@ -21,12 +21,12 @@
         {% for image in images %}
             <div class="card m-2" style="width: 18rem;">
                 <div class="row g-0">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <img src="{{image.image.url}}" class="img-fluid rounded-start" alt = "no Image">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="card-body">
-                            <h5 class="card-title">{{image.id}}</h5>
+                            <a href="/receipt/{{image.id}}" class="btn btn-primary">編集</a>
                         </div>
                     </div>
                 </div>

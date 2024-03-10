@@ -21,3 +21,12 @@ def index(request):
     params['images'] = UploadImage.objects.order_by('-id')
 
     return render(request, 'receipt/index.html', params)
+
+def input(request, receipt_id):
+    params = {
+        'title': 'データ編集',
+        'id':receipt_id,
+        'image':None
+    }
+    params['image'] = get_object_or_404(UploadImage,pk=receipt_id)
+    return render(request, 'receipt/input.html',params)
