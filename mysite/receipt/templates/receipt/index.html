@@ -13,20 +13,21 @@
         <h2>画像を登録する</h2>
         <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form upload_form show_label=False %}
+            {% bootstrap_form image_form show_label=False %}
             {% bootstrap_button type="submit" content="アップロード" %}
         </form>
     </div>
     <div class="row">
-        {% for image in images %}
-            <div class="card m-2" style="width: 18rem;">
+        {% for receipt in receipts %}
+            <div class="card m-2" style="max-width: 420px;">
                 <div class="row g-0">
                     <div class="col-md-5">
-                        <img src="{{image.image.url}}" class="img-fluid rounded-start" alt = "no Image">
+                        <img src="{{receipt.image.url}}" class="img-fluid rounded-start" alt = "no Image">
                     </div>
                     <div class="col-md-7">
                         <div class="card-body">
-                            <a href="/receipt/{{image.id}}" class="btn btn-primary">編集</a>
+                            <p>{{receipt.date}}</p>
+                            <a href="/receipt/{{receipt.id}}" class="btn btn-primary">編集</a>
                         </div>
                     </div>
                 </div>

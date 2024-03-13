@@ -1,7 +1,17 @@
 from django import forms
-from .models import UploadImage
+from .models import Receipt
 
-class UploadForm(forms.ModelForm):
+class ImageForm(forms.ModelForm):
     class Meta:
-        model = UploadImage
+        model = Receipt
         fields = ['image']
+
+class ReceiptForm(forms.ModelForm):
+    class Meta:
+        model = Receipt
+        fields = ['date']
+        widgets = {
+            'date': forms.NumberInput(attrs={
+                "type": "date"
+            })
+        }

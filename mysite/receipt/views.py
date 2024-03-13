@@ -1,24 +1,22 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 
 # Create your views here.
-from .forms import UploadForm
-from .models import UploadImage
+from .forms import ImageForm,ReceiptForm
+from .models import Receipt
 
 def index(request):
     params = {
         'title': '画像のアップロード',
-        'upload_form': UploadForm(),
+        'image_form': ImageForm(),
         'id': None,
-        'images':None
     }
 
     if (request.method == 'POST'):
-        form = UploadForm(request.POST, request.FILES)
+        form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            upload_image = form.save()
-
-            params['id'] = upload_image.id
-    params['images'] = UploadImage.objects.order_by('-id')
+            receipt = form.save()
+            params['id'] = receipt.id
+    params['receipts'] = Receipt.objects.order_by('-id')
 
     return render(request, 'receipt/index.html', params)
 
@@ -26,7 +24,13 @@ def input(request, receipt_id):
     params = {
         'title': 'データ編集',
         'id':receipt_id,
-        'image':None
+        'receipt_form':ReceiptForm()
     }
-    params['image'] = get_object_or_404(UploadImage,pk=receipt_id)
+    receipt = get_object_or_404(Receipt,pk=receipt_id)
+    if (request.method == 'POST'):
+        form = ReceiptForm(request.POST,instance=receipt)
+        if form.is_valid():
+            form.save()
+        return redirect('index')
+    params['receipt'] = receipt
     return render(request, 'receipt/input.html',params)

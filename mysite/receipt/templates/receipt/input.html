@@ -3,9 +3,16 @@
 {% block content %}
     <h1>{{title}}</h1>
     <div class="row">
-        <img src="{{image.image.url}}" class="col-md-4">
+        <img src="{{receipt.image.url}}" class="col-md-4">
         <div class="col-md-8">
-            <p>Text</p>
+            <form action="{% url 'input' id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="m-2">
+                    {% bootstrap_form receipt_form %}
+                    {% bootstrap_button type="submit" content="更新" %}
+                </div>
+            </form>
+
         </div>
     </div>
 {% endblock content %}
