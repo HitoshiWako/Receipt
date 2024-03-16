@@ -5,7 +5,7 @@
     <div class="row">
         <img src="{{receipt.image.url}}" class="col-md-4">
         <div class="col-md-8">
-            <form action="{% url 'input' id %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'input' receipt.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="m-2">
                     {% bootstrap_form receipt_form %}

@@ -6,7 +6,7 @@ from .models import Receipt
 
 def index(request):
     params = {
-        'title': '画像のアップロード',
+        'title': 'レシート一覧',
         'image_form': ImageForm(),
         'id': None,
     }
@@ -21,16 +21,16 @@ def index(request):
     return render(request, 'receipt/index.html', params)
 
 def input(request, receipt_id):
+    receipt = get_object_or_404(Receipt,pk=receipt_id)
+    form = ReceiptForm(instance=receipt)
     params = {
         'title': 'データ編集',
-        'id':receipt_id,
-        'receipt_form':ReceiptForm()
+        'receipt':receipt,
+        'receipt_form':form
     }
-    receipt = get_object_or_404(Receipt,pk=receipt_id)
     if (request.method == 'POST'):
         form = ReceiptForm(request.POST,instance=receipt)
         if form.is_valid():
             form.save()
         return redirect('index')
-    params['receipt'] = receipt
     return render(request, 'receipt/input.html',params)
