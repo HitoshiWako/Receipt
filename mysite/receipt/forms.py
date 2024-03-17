@@ -9,7 +9,7 @@ class ImageForm(forms.ModelForm):
 class ReceiptForm(forms.ModelForm):
     class Meta:
         model = Receipt
-        fields = ['date']
+        fields = ['date','store']
         widgets = {
             'date': forms.NumberInput(attrs={
                 "type": "date"
@@ -19,4 +19,4 @@ class ReceiptForm(forms.ModelForm):
 class StoreForm(forms.ModelForm):
     class Meta:
         model = Store
-        fields = ['name']
+        fields = ['name','branch']
