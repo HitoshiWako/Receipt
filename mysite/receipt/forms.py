@@ -1,5 +1,5 @@
 from django import forms
-from .models import Receipt
+from .models import Receipt,Store
 
 class ImageForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,8 @@ class ReceiptForm(forms.ModelForm):
                 "type": "date"
             })
         }
+
+class StoreForm(forms.ModelForm):
+    class Meta:
+        model = Store
+        fields = ['name']

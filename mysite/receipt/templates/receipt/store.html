@@ -5,15 +5,14 @@
     <div class="row">
         <img src="{{receipt.image.url}}" class="col-md-4">
         <div class="col-md-8">
-            <form action="{% url 'input' receipt.id %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'store' receipt.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="m-2">
-                    {% bootstrap_form receipt_form %}
-                    <a href="/receipt/{{receipt.id}}/store/" class="btn btn-primary">新規店舗登録</a>
-                    {% bootstrap_button type="submit" content="更新" %}
+                    {% bootstrap_form store_form %}
+                    {% bootstrap_button type="submit" content="新規登録" %}
                 </div>
             </form>
-
+            <a href="/receipt/{{receipt.id}}/" class="btn btn-secondary">戻る</a>
         </div>
     </div>
 {% endblock content %}

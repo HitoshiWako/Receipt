@@ -5,3 +5,7 @@ from django.db import models
 class Receipt(models.Model):
     image = models.ImageField(upload_to='img/')
     date = models.DateField(blank=True,null=True)
+
+class Store(models.Model):
+    name = models.CharField(max_length=256)
+
