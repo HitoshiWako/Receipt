@@ -19,12 +19,12 @@
     </div>
     <div class="row">
         {% for receipt in receipts %}
-            <div class="card m-2" style="max-width: 420px;">
+            <div class="card m-2" style = "max-width: 32% ">
                 <div class="row g-0">
-                    <div class="col-md-5">
+                    <div class="col-5">
                         <img src="{{receipt.image.url}}" class="img-fluid rounded-start" alt = "no Image">
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-7">
                         <div class="card-body">
                             <p>{{receipt.date}}</p>
                             <p>{{receipt.store}}</p>

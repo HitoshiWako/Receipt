@@ -8,11 +8,11 @@
             <form action="{% url 'store' receipt.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="m-2">
-                    {% bootstrap_form store_form %}
+                    {% bootstrap_form store_form layout="horizontal" %}
                     {% bootstrap_button type="submit" content="新規登録" %}
                 </div>
             </form>
-            <a href="/receipt/{{receipt.id}}/" class="btn btn-secondary">戻る</a>
+            <a href="/receipt/{{receipt.id}}/" class="btn btn-secondary m-2">戻る</a>
         </div>
     </div>
 {% endblock content %}

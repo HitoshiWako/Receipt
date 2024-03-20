@@ -33,7 +33,7 @@ def input(request, receipt_id):
         if form.is_valid():
             form.save()
         return redirect('index')
-    return render(request, 'receipt/input.html',params)
+    return render(request, 'receipt/edit.html',params)
 
 def store(request, receipt_id):
     receipt = get_object_or_404(Receipt,pk=receipt_id)

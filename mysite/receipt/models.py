@@ -13,5 +13,7 @@ class Store(models.Model):
 class Receipt(models.Model):
     image = models.ImageField(upload_to='img/')
     date = models.DateField(blank=True,null=True)
-    store = models.ForeignKey(Store,on_delete=models.SET_NULL,null=True)
+    store_id = models.ForeignKey(Store,on_delete=models.SET_NULL,null=True)
+
+
 

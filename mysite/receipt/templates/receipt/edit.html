@@ -8,8 +8,15 @@
             <form action="{% url 'input' receipt.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="m-2">
-                    {% bootstrap_form receipt_form %}
-                    <a href="/receipt/{{receipt.id}}/store/" class="btn btn-primary">新規店舗登録</a>
+                    {% bootstrap_field receipt_form.date layout="horizontal" %}
+                    <div class="row">
+                        <div class="col-10">
+                            {% bootstrap_field receipt_form.store_id layout="horizontal" %}
+                        </div>
+                        <div class="col-2">
+                            <a href="/receipt/{{receipt.id}}/store/" class="btn btn-primary">新規店舗登録</a>
+                        </div>
+                    </div>
                     {% bootstrap_button type="submit" content="更新" %}
                 </div>
             </form>
