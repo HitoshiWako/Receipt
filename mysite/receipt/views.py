@@ -27,6 +27,15 @@ class IndexView(generic.FormView):
         form.save()
         return redirect('index')
 
+class ReceiptView(generic.UpdateView):
+    template_name = 'receipt/edit.html'
+    form_class = ReceiptForm
+    model = Receipt
+    success_url = reverse_lazy('index')
+    extra_context={
+        'title':'データ編集',
+        }
+
 def store(request, receipt_id):
     receipt = get_object_or_404(Receipt,pk=receipt_id)
     form = StoreForm()
