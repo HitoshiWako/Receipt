@@ -13,7 +13,7 @@
         <h2>画像を登録する</h2>
         <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form image_form show_label=False %}
+            {% bootstrap_form form show_label=False %}
             {% bootstrap_button type="submit" content="アップロード" %}
         </form>
     </div>

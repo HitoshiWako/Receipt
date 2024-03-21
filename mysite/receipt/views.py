@@ -1,39 +1,31 @@
+from typing import Any
+from django.db.models.query import QuerySet
+from django.forms import BaseModelForm
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render,get_object_or_404,redirect
+from django.views import generic
+from django.urls import reverse_lazy
 
 # Create your views here.
 from .forms import ImageForm,ReceiptForm,StoreForm
 from .models import Receipt
-
-def index(request):
-    params = {
-        'title': 'レシート一覧',
-        'image_form': ImageForm(),
-        'id': None,
-    }
-
-    if (request.method == 'POST'):
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            receipt = form.save()
-            params['id'] = receipt.id
-    params['receipts'] = Receipt.objects.order_by('-id')
-
-    return render(request, 'receipt/index.html', params)
-
-def input(request, receipt_id):
-    receipt = get_object_or_404(Receipt,pk=receipt_id)
-    form = ReceiptForm(instance=receipt)
-    params = {
-        'title': 'データ編集',
-        'receipt':receipt,
-        'receipt_form':form
-    }
-    if (request.method == 'POST'):
-        form = ReceiptForm(request.POST,instance=receipt)
-        if form.is_valid():
-            form.save()
+    
+class IndexView(generic.FormView):
+    template_name = 'receipt/index.html'
+    form_class = ImageForm
+    success_url = reverse_lazy('index')
+    extra_context={
+        'title':'レシート一覧',
+        }
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        ctx['receipts']=Receipt.objects.order_by('-id')
+        return ctx
+    
+    def form_valid(self, form: Any) -> HttpResponse:
+        form.save()
         return redirect('index')
-    return render(request, 'receipt/edit.html',params)
 
 def store(request, receipt_id):
     receipt = get_object_or_404(Receipt,pk=receipt_id)
