@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 # Create your views here.
 from .forms import ImageForm,ReceiptForm,StoreForm
-from .models import Receipt
+from .models import Receipt,Store
     
 class IndexView(generic.FormView):
     template_name = 'receipt/index.html'
@@ -22,10 +22,10 @@ class IndexView(generic.FormView):
         ctx = super().get_context_data(**kwargs)
         ctx['receipts']=Receipt.objects.order_by('-id')
         return ctx
-    
+
     def form_valid(self, form: Any) -> HttpResponse:
         form.save()
-        return redirect('index')
+        return super().form_valid(form)
 
 class ReceiptView(generic.UpdateView):
     template_name = 'receipt/edit.html'
@@ -36,17 +36,25 @@ class ReceiptView(generic.UpdateView):
         'title':'データ編集',
         }
 
-def store(request, receipt_id):
-    receipt = get_object_or_404(Receipt,pk=receipt_id)
-    form = StoreForm()
-    params = {
-        'title': '店名登録',
-        'receipt': receipt,
-        'store_form': form
-    }
-    if request.method == 'POST':
-        form = StoreForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('input',receipt.id)
-    return render(request, 'receipt/store.html',params)
+class StoreView(generic.CreateView):
+    template_name = 'receipt/store.html'
+    form_class = StoreForm
+    extra_context={
+        'title':'店舗登録',
+        }
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        receipt = get_object_or_404(Receipt,pk=self.kwargs['pk'])
+        ctx['receipt'] = receipt
+        return ctx
+    
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        newstore = form.save()
+        receipt = get_object_or_404(Receipt,pk=self.kwargs['pk'])
+        receipt.store_id = newstore
+        receipt.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('edit',kwargs=self.kwargs)
