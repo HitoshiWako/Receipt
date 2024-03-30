@@ -17,6 +17,13 @@
                             <a href="/receipt/{{receipt.id}}/store/" class="btn btn-primary">新規店舗登録</a>
                         </div>
                     </div>
+                    <div>
+                        {% for item_form in item_formset %}
+                            {% bootstrap_field item_form.name %}
+                            {{ item_form.id }}
+                        {% endfor %}
+                    </div>
+                    {{ item_formset.management_form }}
                     {% bootstrap_button type="submit" content="更新" %}
                 </div>
             </form>

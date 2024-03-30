@@ -1,14 +1,14 @@
 from typing import Any
-from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render,get_object_or_404,redirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
+from django import forms
 
 # Create your views here.
 from .forms import ImageForm,ReceiptForm,StoreForm
-from .models import Receipt,Store
+from .models import Receipt,Item
     
 class IndexView(generic.FormView):
     template_name = 'receipt/index.html'
@@ -31,10 +31,29 @@ class ReceiptView(generic.UpdateView):
     template_name = 'receipt/edit.html'
     form_class = ReceiptForm
     model = Receipt
+    ItemFormSet = forms.inlineformset_factory(parent_model=Receipt,model=Item,fields=['name'],extra=3)
     success_url = reverse_lazy('index')
     extra_context={
         'title':'データ編集',
         }
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        receipt = Receipt.objects.get(pk = self.kwargs['pk'])
+        queryset = Item.objects.filter(receipt_id = receipt)
+        ctx = super().get_context_data(**kwargs)
+        item_formset = self.ItemFormSet(self.request.POST or None,instance=self.object,queryset=queryset)
+        ctx['item_formset']=item_formset
+        return ctx
+    
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        ctx = self.get_context_data()
+        item_formset = ctx['item_formset']
+        if item_formset.is_valid():
+            item_formset.save()
+        else:
+            print('ERRROR',item_formset.errors)
+            print('ERRRRROR',item_formset.non_form_errors)
+        return super().form_valid(form)
 
 class StoreView(generic.CreateView):
     template_name = 'receipt/store.html'
