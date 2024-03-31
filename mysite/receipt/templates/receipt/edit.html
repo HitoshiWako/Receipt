@@ -17,12 +17,27 @@
                             <a href="/receipt/{{receipt.id}}/store/" class="btn btn-primary">新規店舗登録</a>
                         </div>
                     </div>
-                    <div>
-                        {% for item_form in item_formset %}
-                            {% bootstrap_field item_form.name %}
-                            {{ item_form.id }}
-                        {% endfor %}
-                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>品名</th>
+                                <th>価格</th>
+                                <th>割引</th>
+                                <th>数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item_form in item_formset %}
+                                <tr>
+                                    <td>{% bootstrap_field item_form.name  layout="inline" %}</td>
+                                    <td>{% bootstrap_field item_form.price  layout="inline" %}</td>
+                                    <td>{% bootstrap_field item_form.discount  layout="inline" %}</td>
+                                    <td>{% bootstrap_field item_form.qty  layout="inline" %}</td>
+                                    {{ item_form.id }}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     {{ item_formset.management_form }}
                     {% bootstrap_button type="submit" content="更新" %}
                 </div>

@@ -31,7 +31,7 @@ class ReceiptView(generic.UpdateView):
     template_name = 'receipt/edit.html'
     form_class = ReceiptForm
     model = Receipt
-    ItemFormSet = forms.inlineformset_factory(parent_model=Receipt,model=Item,fields=['name'],extra=3)
+    ItemFormSet = forms.inlineformset_factory(parent_model=Receipt,model=Item,fields=['name','price','discount','qty'],extra=3)
     success_url = reverse_lazy('index')
     extra_context={
         'title':'データ編集',
@@ -50,9 +50,6 @@ class ReceiptView(generic.UpdateView):
         item_formset = ctx['item_formset']
         if item_formset.is_valid():
             item_formset.save()
-        else:
-            print('ERRROR',item_formset.errors)
-            print('ERRRRROR',item_formset.non_form_errors)
         return super().form_valid(form)
 
 class StoreView(generic.CreateView):
